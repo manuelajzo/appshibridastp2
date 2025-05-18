@@ -1,0 +1,19 @@
+{
+  "name": "1-parcial",
+  "version": "1.0.0",
+  "description": "Primer parcial de Aplicaciones Híbridas 2025",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Manuela Jaureguialzo <manuela.jaureguialzo@davinci.edu.ar>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manuelajzo/apps-hibridas.git"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1"
+  }
+}
