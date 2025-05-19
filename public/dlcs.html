@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Sims DLCs</title>
+</head>
+<body>
+    <h1>All Sims DLCs List</h1>
+    <div>
+        <label for="categoryFilter">Filter by Category:</label>
+        <select id="categoryFilter">
+          <option value="">All</option>
+          <option value="Expansion">Expansion</option>
+          <option value="game pack">Game Pack</option>
+          <!-- <option value="Stuff Pack">Stuff Pack</option>
+          <option value="Kit">Kit</option> -->
+        </select>
+    
+        <label for="sortOrder">Sort by Category:</label>
+        <select id="sortOrder">
+          <option value="">None</option>
+          <option value="category_asc">Ascending</option>
+          <option value="category_desc">Descending</option>
+        </select>
+        
+        <label for="nameSearch">Search by Name:</label>
+        <input type="text" id="nameSearch" placeholder="Enter DLC name" />
+
+        <button id="applyFilters">Apply</button>
+    </div>
+    
+    <div id="dlcsList"></div>
+
+    <button id="prevBtn">Previous</button>
+    <button id="nextBtn">Next</button>
+    <p id="pageInfo"></p>
+    
+    <script>
+        const categoryFilter = document.getElementById('categoryFilter');
+        const sortOrder = document.getElementById('sortOrder');
+        const applyBtn = document.getElementById('applyFilters');
+        const dlcsList = document.getElementById('dlcsList');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const pageInfo = document.getElementById('pageInfo');
+    
+        let currentPage = 1;
+        const limit = 5;
+    
+        function buildUrl(page) {
+          let url = `/api/dlcs?page=${page}&limit=${limit}`;
+    
+          if (categoryFilter.value) {
+            url += `&category=${encodeURIComponent(categoryFilter.value)}`;
+          }
+          if (sortOrder.value) {
+            url += `&sort=${encodeURIComponent(sortOrder.value)}`;
+          }
+          const nameSearch = document.getElementById('nameSearch').value.trim();
+          if (nameSearch) {
+            url += `&name=${encodeURIComponent(nameSearch)}`;
+          }
+          return url;
+        }
+    
+        async function fetchDLCs(page = 1) {
+          const url = buildUrl(page);
+          try {
+            const response = await fetch(url);
+            const data = await response.json();
+    
+            renderDlcs(data.dlcs);
+            updatePagination(data.currentPage, data.totalPages);
+          } catch (error) {
+            dlcsList.textContent = 'Error loading DLCs.';
+            console.error('Error loading DLCs:', error);
+          }
+        }
+    
+        function renderDlcs(dlcs) {
+          dlcsList.innerHTML = '';
+          if (!dlcs.length) {
+            dlcsList.textContent = 'No DLCs found.';
+            return;
+          }
+    
+          dlcs.forEach(dlc => {
+            const div = document.createElement('div');
+    
+            const img = document.createElement('img');
+            img.src = dlc.image;
+            img.alt = dlc.name;
+            img.style.width = '250px';
+    
+            const name = document.createElement('p');
+            name.textContent = dlc.name;
+    
+            const description = document.createElement('p');
+            description.textContent = dlc.description;
+    
+            const year = document.createElement('p');
+            year.textContent = `Year: ${dlc.year}`;
+    
+            const game = document.createElement('p');
+            game.textContent = `Base Game: ${dlc.game}`;
+    
+            const category = document.createElement('p');
+            category.textContent = `Category: ${dlc.category}`;
+    
+            div.appendChild(img);
+            div.appendChild(name);
+            div.appendChild(description);
+            div.appendChild(year);
+            div.appendChild(game);
+            div.appendChild(category);
+    
+            dlcsList.appendChild(div);
+          });
+        }
+    
+        function updatePagination(current, total) {
+          pageInfo.textContent = `Page ${current} of ${total}`;
+          prevBtn.disabled = current <= 1;
+          nextBtn.disabled = current >= total;
+          currentPage = current;
+        }
+    
+        applyBtn.addEventListener('click', () => {
+          currentPage = 1; 
+          fetchDLCs(currentPage);
+        });
+    
+        prevBtn.addEventListener('click', () => {
+          if (currentPage > 1) {
+            fetchDLCs(currentPage - 1);
+          }
+        });
+    
+        nextBtn.addEventListener('click', () => {
+          fetchDLCs(currentPage + 1);
+        });
+    
+        fetchDLCs(currentPage);
+      </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Sims Games</title>
+</head>
+<body>
+    <h1>All Sims Games List</h1>
+    <div id="gamesList"></div>
+
+    <script>
+        fetch("/api/games")
+      .then(response => response.json())
+      .then(games => {
+        const container = document.getElementById('gamesList');
+        container.innerHTML = '';
+
+        games.forEach(game => {
+          const div = document.createElement('div');
+
+          const img = document.createElement('img');
+          img.src = game.image;
+          img.alt = game.name;
+          img.style.width = '250px';
+
+          const name = document.createElement('p');
+          name.textContent = game.name;
+
+          const description = document.createElement('p');
+          description.textContent = game.description;
+
+          const year = document.createElement('p');
+          year.textContent = `Year: ${game.year}`;
+
+          const platforms = document.createElement('p');
+          platforms.textContent = `Plataforms: ${game.platforms.join(', ')}`;
+
+          const developer = document.createElement('p');
+          developer.textContent = `Developer: ${game.developer}`;
+
+          div.appendChild(img);
+          div.appendChild(name);
+          div.appendChild(description);
+          div.appendChild(year);
+          div.appendChild(platforms);
+          div.appendChild(developer);
+
+          container.appendChild(div);
+        });
+      })
+      .catch(error => console.error('Error al cargar juegos:', error));
+    </script>
+</body>
+</html>

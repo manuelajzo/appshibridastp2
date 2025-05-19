@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Primer parcial de Aplicaciones Híbridas 2025",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "author": "Manuela Jaureguialzo <manuela.jaureguialzo@davinci.edu.ar>",
   "license": "ISC",
@@ -14,6 +15,12 @@
     "url": "https://github.com/manuelajzo/apps-hibridas.git"
   },
   "dependencies": {
-    "chalk": "^5.4.1"
+    "bcryptjs": "^3.0.2",
+    "chalk": "^5.4.1",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.15.0",
+    "nodemon": "^3.1.10"
   }
 }
