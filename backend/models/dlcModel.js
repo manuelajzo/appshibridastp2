@@ -10,12 +10,12 @@ const dlcSchema = new mongoose.Schema({
     category: { type: String, required: true },
 });
 
-export const getAllDlc = () => {
-    return dlc;
-}
+// export const getAllDlc = () => {
+//     return dlc;
+// }
 
-export const getDlcById = () => {
-    return  dlc.find(dlc => dlc.id === id);
-}
+// export const getDlcById = () => {
+//     return  dlc.find(dlc => dlc.id === id);
+// }
 
 export default mongoose.model("dlcs", dlcSchema);
